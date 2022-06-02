@@ -1,0 +1,33 @@
+name: ServerManager
+version: '${project.version}'
+main: de.iv.manager.core.Main
+api-version: 1.18
+prefix: Server Manager
+authors: [ Iv ]
+description: A nice way to manage your Server
+depend: [PlaceholderAPI]
+commands:
+  manager:
+    aliases: m
+    description: Zeigt alle Commands des Manager-Plugins
+permissions:
+  manager:
+    showNoteMenu:
+    description: Zeigt das Note-Menu
+    seeNoteCreationLog:
+    seeCommandLog:
+
+    player:
+      chat_format
+    mod:
+      chat_format
+    admin:
+      chat_format
+    example1:
+      chat_format
+    example2:
+      chat_format
+    example3:
+      chat_format
+website: https://micromotion.com
+
