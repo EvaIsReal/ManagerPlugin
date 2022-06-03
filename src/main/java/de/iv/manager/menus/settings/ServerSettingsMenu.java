@@ -6,6 +6,7 @@ import de.iv.manager.core.Vars;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
+import de.iv.manager.menus.cc.ChatControlMenu;
 import de.iv.manager.menus.plugins.PluginListMenu;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.ChatColor;
@@ -17,6 +18,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class ServerSettingsMenu extends Menu {
@@ -50,6 +54,16 @@ public class ServerSettingsMenu extends Menu {
                 MenuManager.openMenu(PluginListMenu.class, playerMenuUtility.getOwner());
             }
 
+            case NAME_TAG -> {
+                MenuManager.openMenu(ChatControlMenu.class, playerMenuUtility.getOwner());
+            }
+        }
+        if(e.getCurrentItem().equals(inventory.getItem(35))) {
+            try {
+                Desktop.getDesktop().browse(URI.create("https://www.youtube.com/watch?v=wdUCRDvFv3Q&ab_channel=稲葉曇"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -59,7 +73,8 @@ public class ServerSettingsMenu extends Menu {
         inventory.setItem(10, new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aÄndere die Modt")).setLore(Vars.color("&7Setze die Modt des Servers"),
                 Vars.color("&7(Die Nachricht in der Server-Liste)"),
                 "",
-                (String) ConfigManager.getInstance().getMessages().toFileConfiguration().get("Out.Server.Motd")).build());
+                "§7'" + (String) ConfigManager.getInstance().getMessages().toFileConfiguration().get("Out.Server.Motd") + "§7'").build());
+        inventory.setItem(35, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Vars.color("&r;)")).build());
 
         new BukkitRunnable() {
             @Override
@@ -67,17 +82,22 @@ public class ServerSettingsMenu extends Menu {
                 long freeRAM = Runtime.getRuntime().freeMemory();
                 long maxRAM = Runtime.getRuntime().maxMemory();
                 long r = (maxRAM - freeRAM);
-                    inventory.setItem(13, new ItemBuilder(Material.COMMAND_BLOCK).setName(Vars.color("&a&lRAM-Auslastung"))
-                                    .setLore("", Vars.color("&a" + r/1000000 + "&7/&a" + maxRAM/1000000 + " &9&lMB"))
+                    inventory.setItem(12, new ItemBuilder(Material.COMMAND_BLOCK).setName(Vars.color("&a&lRAM-Auslastung"))
+                                    .setLore("", Vars.color("&7" + r/1000000 + "&a&l/&7" + maxRAM/1000000 + " &9&lMB"))
                                     .build());
 
             }
         }.runTaskTimer(Main.getInstance(), 0, 10);
 
 
-        inventory.setItem(16, new ItemBuilder(Material.PAPER).setName(Vars.color("&aPlugins")).setLore(
+        inventory.setItem(14, new ItemBuilder(Material.PAPER).setName(Vars.color("&aPlugins")).setLore(
                 Vars.color("&7Sieh dir alle auf dem Server installierten Plugins an.")
         ).build());
+
+        inventory.setItem(16, new ItemBuilder(Material.NAME_TAG).setName(Vars.color("&aChat Kontrolle")).setLore(
+                Vars.color("&7Verwalte Wörter, die nichts im Chat verloren haben.")
+        ).build());
+
     }
 
     @NotNull
