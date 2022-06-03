@@ -8,18 +8,16 @@ import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.plugins.PluginListMenu;
 import de.iv.manager.utils.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.charset.StandardCharsets;
 
 public class ServerSettingsMenu extends Menu {
 
@@ -66,12 +64,17 @@ public class ServerSettingsMenu extends Menu {
         new BukkitRunnable() {
             @Override
             public void run() {
-                inventory.setItem(13, new ItemBuilder(Material.COMMAND_BLOCK).setName(Vars.color("&aRAM-Auslastung"))
-                                .setLore("",
-                                 Vars.color("&9&lRAM: &a" + (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory())/1000000+ "&b/&a" + Runtime.getRuntime().maxMemory()/1000000 + " &aMB"))
-                                .build());
+                long freeRAM = Runtime.getRuntime().freeMemory();
+                long maxRAM = Runtime.getRuntime().maxMemory();
+                long r = (maxRAM - freeRAM);
+                    inventory.setItem(13, new ItemBuilder(Material.COMMAND_BLOCK).setName(Vars.color("&a&lRAM-Auslastung"))
+                                    .setLore("", Vars.color("&a" + r/1000000 + "&7/&a" + maxRAM/1000000 + " &9&lMB"))
+                                    .build());
+
             }
         }.runTaskTimer(Main.getInstance(), 0, 10);
+
+
         inventory.setItem(16, new ItemBuilder(Material.PAPER).setName(Vars.color("&aPlugins")).setLore(
                 Vars.color("&7Sieh dir alle auf dem Server installierten Plugins an.")
         ).build());

@@ -9,10 +9,15 @@ this project without permission!
 
 package de.iv.manager.menus.players;
 
+import de.iv.manager.core.Vars;
 import de.iv.manager.menus.Menu;
+import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
+import de.iv.manager.utils.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class CurrentPlayerMenu extends Menu {
@@ -29,17 +34,21 @@ public class CurrentPlayerMenu extends Menu {
 
     @Override
     public int getSlots() {
-        return 27;
+        return 36;
     }
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-
+        switch (e.getCurrentItem().getType()) {
+            case BARRIER -> {
+                MenuManager.openMenu(MenuManager.getPreviousMenu(), playerMenuUtility.getOwner());
+            }
+        }
     }
 
     @Override
     public void setMenuItems() {
-
+        inventory.setItem(31, new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build());
 
 
         setFillerGlass();

@@ -10,6 +10,10 @@ this project without permission!
 package de.iv.manager.events;
 
 import de.iv.manager.menus.Menu;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,6 +35,12 @@ public class MenuListener implements Listener {
             if(e.getCurrentItem() == null) {
                 return;
             }
+
+            if(!e.getCurrentItem().getType().equals(Material.GRAY_STAINED_GLASS_PANE)) {
+                Player p = (Player) e.getWhoClicked();
+                p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1, 2);
+            }
+
             ((Menu) holder).handleMenu(e);
         }
     }

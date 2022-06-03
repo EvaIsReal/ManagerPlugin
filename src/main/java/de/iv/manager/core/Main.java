@@ -13,7 +13,6 @@ import de.iv.manager.events.LoginListener;
 import de.iv.manager.events.ServerPingListener;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.plugins.CurrentPluginMenu;
-import de.iv.manager.regions.RegionListener;
 import de.iv.manager.regions.RegionManager;
 import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
@@ -27,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
 

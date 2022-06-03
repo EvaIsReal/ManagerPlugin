@@ -11,16 +11,11 @@ package de.iv.manager.events;
 
 import de.iv.manager.core.ConfigManager;
 import de.iv.manager.core.Vars;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import javax.imageio.stream.FileCacheImageInputStream;
 
 public class ChatFormatListener implements Listener {
 

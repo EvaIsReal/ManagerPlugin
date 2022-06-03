@@ -11,6 +11,7 @@ package de.iv.manager.menus;
 
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.notes.NoteListMenu;
+import de.iv.manager.menus.notes.NotesMenu;
 import de.iv.manager.menus.players.PlayerListMenu;
 import de.iv.manager.menus.regions.RegionsMenu;
 import de.iv.manager.menus.settings.ServerSettingsMenu;
@@ -45,7 +46,7 @@ public class ManagerMenu extends Menu{
                 MenuManager.openMenu(PlayerListMenu.class, playerMenuUtility.getOwner());
                 break;
             case PAPER:
-                MenuManager.openMenu(NoteListMenu.class, playerMenuUtility.getOwner());
+                MenuManager.openMenu(NotesMenu.class, playerMenuUtility.getOwner());
                 break;
 
             case COMMAND_BLOCK:

@@ -7,6 +7,7 @@ import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PaginatedMenu;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.players.CurrentPlayerMenu;
+import de.iv.manager.menus.settings.ServerSettingsMenu;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -63,7 +64,7 @@ public class PluginListMenu extends PaginatedMenu {
                 }
                 break;
             case BARRIER:
-                playerMenuUtility.getOwner().closeInventory();
+                MenuManager.openMenu(ServerSettingsMenu.class, playerMenuUtility.getOwner());
                 break;
         }
     }

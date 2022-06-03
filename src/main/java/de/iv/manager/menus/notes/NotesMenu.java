@@ -11,6 +11,7 @@ package de.iv.manager.menus.notes;
 
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
+import de.iv.manager.menus.ManagerMenu;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.MenuManager;
@@ -59,6 +60,9 @@ public class NotesMenu extends Menu {
                         .withEscapeSequence("exit").withTimeout(60);
 
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
+                break;
+            case BARRIER:
+                MenuManager.openMenu(ManagerMenu.class, playerMenuUtility.getOwner());
                 break;
         }
     }

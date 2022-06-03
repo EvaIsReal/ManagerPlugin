@@ -9,10 +9,7 @@ this project without permission!
 
 package de.iv.manager.menus.players;
 
-import de.iv.manager.menus.Menu;
-import de.iv.manager.menus.MenuManager;
-import de.iv.manager.menus.PaginatedMenu;
-import de.iv.manager.menus.PlayerMenuUtility;
+import de.iv.manager.menus.*;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,7 +67,7 @@ public class PlayerListMenu extends PaginatedMenu {
                 }
             break;
             case BARRIER:
-                playerMenuUtility.getOwner().closeInventory();
+                MenuManager.openMenu(ManagerMenu.class, playerMenuUtility.getOwner());
                 break;
         }
     }

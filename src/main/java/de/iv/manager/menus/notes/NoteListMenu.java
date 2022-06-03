@@ -54,7 +54,7 @@ public class NoteListMenu extends PaginatedMenu {
         ArrayList<Note> players = new ArrayList<>(NoteStorageUtil.getNotes());
         PlayerMenuUtility pmu = (PlayerMenuUtility) playerMenuUtility;
         if(e.getCurrentItem().getType() == Material.BARRIER) {
-            MenuManager.openMenu(NotesMenu.class, playerMenuUtility.getOwner());
+            MenuManager.openMenu(MenuManager.getPreviousMenu(), playerMenuUtility.getOwner());
         } else if(e.getCurrentItem().getType()==Material.PAPER) {
             PersistentDataContainer container = e.getCurrentItem().getItemMeta().getPersistentDataContainer();
             String noteID = container.get(new NamespacedKey(Main.getInstance(), "noteID"), PersistentDataType.STRING);

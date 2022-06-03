@@ -77,15 +77,16 @@ public class CurrentPluginMenu extends Menu {
     @Override
     public void setMenuItems() {
         setFillerGlass();
-        inventory.setItem(11, new ItemBuilder(Material.EMERALD_BLOCK).setName(Vars.color("&aAktivieren"))
+        /*inventory.setItem(11, new ItemBuilder(Material.EMERALD_BLOCK).setName(Vars.color("&aAktivieren"))
                         .setLore(Vars.color("&aAktiviere &7dieses Plugin"))
                         .build());
-        inventory.setItem(13, new ItemBuilder(Material.PAPER).setName(Vars.color("&aInformationen"))
+        */inventory.setItem(13, new ItemBuilder(Material.PAPER).setName(Vars.color("&aInformationen"))
                 .setLore(Vars.color("&7Zeige Informationen zu diesem Plugin"), Vars.color("&7im Chat an"))
                 .build());
-        inventory.setItem(15, new ItemBuilder(Material.REDSTONE_BLOCK).setName(Vars.color("&cDektivieren"))
+        /*inventory.setItem(15, new ItemBuilder(Material.REDSTONE_BLOCK).setName(Vars.color("&cDektivieren"))
                 .setLore(Vars.color("&cDeaktiviere &7dieses Plugin"))
                 .build());
+        */
     }
 
     public static void saveDisabledPlugin(Plugin plugin) {
