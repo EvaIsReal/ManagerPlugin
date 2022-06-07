@@ -1,75 +1,65 @@
 package de.iv.manager.menus.cc;
 
-import com.google.gson.Gson;
-import de.iv.manager.core.Main;
-import de.iv.manager.models.BlacklistedPhrase;
-import de.iv.manager.models.Note;
+import de.iv.manager.exceptions.ObjectNotContainedException;
+import de.iv.manager.utils.DataManager;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class BlackListManager {
 
-    //Handles I/O for blacklisted words
-    private static ArrayList<BlacklistedPhrase> blacklistedWords = new ArrayList<>();
+    private static ArrayList<String> blacklistedPhrases = new ArrayList<>();
 
-    public static BlacklistedPhrase addNewPhrase(String name, String phrase) {
-        BlacklistedPhrase blacklistedPhrase = new BlacklistedPhrase(name, phrase);
-        blacklistedWords.add(blacklistedPhrase);
-        return blacklistedPhrase;
-    }
 
-    public static void loadPhrases() throws IOException {
-        Gson gson = new Gson();
-        File file = new File(Main.getInstance().getDataFolder().getAbsolutePath() + "/persistentData/", "blacklistedWords.json");
-        if(file.exists()) {
-            Reader reader = new FileReader(file);
-            BlacklistedPhrase[] n = gson.fromJson(reader, BlacklistedPhrase[].class);
-            blacklistedWords = new ArrayList<>(Arrays.asList(n));
-            Main.getInstance().getLogger().info("PHRASES LOADED!");
+    public static ArrayList<String> loadPhrases() {
+        try {
+            blacklistedPhrases = (ArrayList<String>) DataManager.deserialize(new File(DataManager.PATH + "/persistentData/blacklistedPhrases.ser"));
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
+        return blacklistedPhrases;
     }
 
-    public static BlacklistedPhrase findNote(UUID uuid) {
-        for(BlacklistedPhrase phrase : blacklistedWords) {
-            if(phrase.getPhraseID().equals(uuid)) {
-                return phrase;
+    public static boolean addToList(String toAdd) {
+        if(blacklistedPhrases.contains(toAdd)) {
+            return false;
+        }
+        blacklistedPhrases.add(toAdd);
+        return true;
+    }
+
+    public static void updatePhrase(String phrase, String newPhrase) {
+        for(String s : blacklistedPhrases) {
+            if(s.equalsIgnoreCase(phrase)) {
+                int index = blacklistedPhrases.indexOf(s);
+                blacklistedPhrases.remove(phrase);
+                blacklistedPhrases.add(index, newPhrase);
             }
         }
-        return null;
     }
 
-    public static void deleteNote(String noteID) {
-        blacklistedWords.forEach(phrase -> blacklistedWords.remove(findNote(phrase.getPhraseID())));
-    }
-
-
-    public static BlacklistedPhrase updatePhrases(UUID uuid, BlacklistedPhrase newPhrase) {
-        for(BlacklistedPhrase phrase : blacklistedWords) {
-            if(phrase.getPhraseID().equals(uuid)) {
-                phrase.setName(newPhrase.getName());
-                phrase.setContent(newPhrase.getContent());
-                return newPhrase;
-            }
+    public boolean removeFromList(String toRemove) throws ObjectNotContainedException {
+        if(!blacklistedPhrases.contains(toRemove)) {
+            throw new ObjectNotContainedException();
         }
-        return null;
+        blacklistedPhrases.remove(toRemove);
+        return true;
     }
 
-    public static void storePhrasesPersistently() throws IOException {
-        Gson gson = new Gson();
-        File file = new File(Main.getInstance().getDataFolder() + "/persistentData/", "blacklistedPhrases.json");
-        if(!file.exists()) file.createNewFile();
-        FileWriter writer = new FileWriter(file, false);
-
-        gson.toJson(blacklistedWords, writer);
-        writer.flush();
-        writer.close();
-        Main.logInfo("PHRASES SAVED");
+    public static void storeBlacklist() {
+        try {
+            DataManager.serialize(blacklistedPhrases, "blacklistedPhrases", "persistentData");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static ArrayList<BlacklistedPhrase> getBlacklistedWords() {
-        return blacklistedWords;
+
+    public static ArrayList<String> getBlacklistedPhrases() {
+        return blacklistedPhrases;
     }
 }

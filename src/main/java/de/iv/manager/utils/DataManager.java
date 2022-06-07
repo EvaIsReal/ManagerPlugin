@@ -42,7 +42,7 @@ public class DataManager {
 
     public static void serialize(Object object, String saveName, String dirName) throws IOException {
 
-        FileOutputStream fileOut = new FileOutputStream(PATH.getPath() + "/" + dirName + "/" +  saveName + "_serialized.ser");
+        FileOutputStream fileOut = new FileOutputStream(PATH.getPath() + "/" + dirName + "/" +  saveName + ".ser");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(object);
         fileOut.close();

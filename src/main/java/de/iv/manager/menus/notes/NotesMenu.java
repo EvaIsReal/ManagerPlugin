@@ -76,8 +76,8 @@ public class NotesMenu extends Menu {
         close = new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build();
 
         inventory.setItem(11, create);
-        inventory.setItem(13, list);
-        inventory.setItem(15, delete);
+        inventory.setItem(15, list);
+        //inventory.setItem(15, delete);
         inventory.setItem(31, close);
 
         setFillerGlass();

@@ -17,7 +17,7 @@ public class Vars {
     }
 
     public static String PREFIX = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Prefix.Main_Prefix");
-    public static String ERROR = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Error");
+    public static String ERROR = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Commands.Exceptions.Prefix");
     public static String SERVER_LOG = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Prefix.CommandLogger");
 
 

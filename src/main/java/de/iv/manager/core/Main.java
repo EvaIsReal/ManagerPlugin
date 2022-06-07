@@ -7,11 +7,9 @@ package de.iv.manager.core;
 
 import de.iv.manager.SQL.SQLite;
 import de.iv.manager.commands.CommandManager;
-import de.iv.manager.events.ChatFormatListener;
-import de.iv.manager.events.MenuListener;
-import de.iv.manager.events.LoginListener;
-import de.iv.manager.events.ServerPingListener;
+import de.iv.manager.events.*;
 import de.iv.manager.menus.PlayerMenuUtility;
+import de.iv.manager.menus.cc.BlackListManager;
 import de.iv.manager.menus.plugins.CurrentPluginMenu;
 import de.iv.manager.regions.RegionManager;
 import de.iv.manager.utils.DataManager;
@@ -82,6 +80,7 @@ public class Main extends JavaPlugin {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        BlackListManager.loadPhrases();
 
         //Setting saving timer for persistent data
         new BukkitRunnable() {
@@ -118,6 +117,7 @@ public class Main extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        BlackListManager.storeBlacklist();
 
     }
 
@@ -130,10 +130,11 @@ public class Main extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
 
         pm.registerEvents(new MenuListener(), instance);
-        pm.registerEvents(new ChatFormatListener(), instance);
+        pm.registerEvents(new ChatListener(), instance);
         //pm.registerEvents(new RegionListener(instance), instance);
         pm.registerEvents(new ServerPingListener(), instance);
         pm.registerEvents(new LoginListener(), instance);
+
     }
 
     //Utility methods
