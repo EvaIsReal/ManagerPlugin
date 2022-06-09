@@ -1,7 +1,5 @@
 TODO:
     -ChatControl
         -finish Menu
-        -finish modifying options
-        -finish ChatListener
     -PlayerMenu
     -complete Server settings

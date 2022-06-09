@@ -30,7 +30,7 @@ public class ChatListener implements Listener {
         e.setCancelled(true);
 
         for (String s : BlackListManager.getBlacklistedPhrases()) {
-            if (e.getMessage().contains(s)) {
+            if (e.getMessage().toLowerCase().contains(s.toLowerCase())) {
                 e.getPlayer().sendMessage(Vars.color(Vars.ERROR + "Deine Nachricht enthält Aussagen, die im Chat verboten sind."));
                 return;
             }

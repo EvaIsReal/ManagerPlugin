@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.Menu;
+import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.models.Note;
 import de.iv.manager.utils.ItemBuilder;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +38,7 @@ public class CurrentPluginMenu extends Menu {
 
     @Override
     public int getSlots() {
-        return 27;
+        return 36;
     }
 
     @Override
@@ -68,6 +70,7 @@ public class CurrentPluginMenu extends Menu {
                         e.getWhoClicked().sendMessage(Vars.color(Vars.PREFIX + ChatColor.BLUE + currentPlugin.getName() + " &7 wurde &cdeakiviert"));
                     } else e.getWhoClicked().sendMessage(Vars.color(Vars.ERROR + "Dieses Plugin ist bereits deaktiviert."));
                 }
+                case BARRIER -> MenuManager.openMenu(MenuManager.getPreviousMenu(), playerMenuUtility.getOwner());
 
             }
         }
@@ -83,6 +86,7 @@ public class CurrentPluginMenu extends Menu {
         */inventory.setItem(13, new ItemBuilder(Material.PAPER).setName(Vars.color("&aInformationen"))
                 .setLore(Vars.color("&7Zeige Informationen zu diesem Plugin"), Vars.color("&7im Chat an"))
                 .build());
+        inventory.setItem(31, new ItemBuilder(Material.BARRIER).setName(Vars.color("&schließen")).build());
         /*inventory.setItem(15, new ItemBuilder(Material.REDSTONE_BLOCK).setName(Vars.color("&cDektivieren"))
                 .setLore(Vars.color("&cDeaktiviere &7dieses Plugin"))
                 .build());

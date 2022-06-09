@@ -2,14 +2,11 @@ package de.iv.manager.menus.cc;
 
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
-import de.iv.manager.events.ConversationAbandonedListener;
+import de.iv.manager.events.IConversationAbandonedListener;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.notes.NoteListMenu;
-import de.iv.manager.menus.notes.NotesMenu;
-import de.iv.manager.menus.settings.ServerSettingsMenu;
-import de.iv.manager.models.BlacklistedPhrase;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -52,7 +49,7 @@ public class ChatControlMenu extends Menu {
                 ConversationFactory factory = new ConversationFactory(Main.getInstance())
                         .withFirstPrompt(new ChatControlMenu.CreatePhraseFirstPrompt())
                         .withLocalEcho(false)
-                        .addConversationAbandonedListener(new ConversationAbandonedListener())
+                        .addConversationAbandonedListener(new IConversationAbandonedListener())
                         .withEscapeSequence("exit").withTimeout(60);
 
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();

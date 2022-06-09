@@ -3,6 +3,8 @@ package de.iv.manager.menus.settings;
 import de.iv.manager.core.ConfigManager;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
+import de.iv.manager.events.IConversationAbandonedListener;
+import de.iv.manager.menus.ManagerMenu;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
@@ -21,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 public class ServerSettingsMenu extends Menu {
 
@@ -45,8 +46,9 @@ public class ServerSettingsMenu extends Menu {
             case WRITABLE_BOOK -> {
                 playerMenuUtility.getOwner().closeInventory();
                 ConversationFactory factory = new ConversationFactory(Main.getInstance())
-                        .withFirstPrompt(new ChangeModtFirstPrompt())
+                        .withFirstPrompt(new ChangeMotdFirstPrompt())
                         .withEscapeSequence("exit")
+                        .addConversationAbandonedListener(new IConversationAbandonedListener())
                         .withLocalEcho(false);
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
             }
@@ -56,6 +58,10 @@ public class ServerSettingsMenu extends Menu {
 
             case NAME_TAG -> {
                 MenuManager.openMenu(ChatControlMenu.class, playerMenuUtility.getOwner());
+            }
+
+            case BARRIER -> {
+                MenuManager.openMenu(ManagerMenu.class, playerMenuUtility.getOwner());
             }
         }
         if(e.getCurrentItem().equals(inventory.getItem(35))) {
@@ -75,6 +81,7 @@ public class ServerSettingsMenu extends Menu {
                 "",
                 "§7'" + (String) ConfigManager.getInstance().getMessages().toFileConfiguration().get("Out.Server.Motd") + "§7'").build());
         inventory.setItem(35, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Vars.color("&r;)")).build());
+        inventory.setItem(31, new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build());
 
         new BukkitRunnable() {
             @Override
@@ -110,7 +117,7 @@ public class ServerSettingsMenu extends Menu {
 
 
     //Prompts-----------------------------------------------------------------------------------------------------------
-    private class ChangeModtFirstPrompt extends StringPrompt {
+    private class ChangeMotdFirstPrompt extends StringPrompt {
         @NotNull
         @Override
         public String getPromptText(@NotNull ConversationContext context) {
@@ -124,11 +131,11 @@ public class ServerSettingsMenu extends Menu {
             ConfigManager.getInstance().getMessages().toFileConfiguration().set("Out.Server.Motd", Vars.color(input));
             ConfigManager.getInstance().getMessages().save();
             context.setSessionData("newMotd", input);
-            return new CompletionPromt();
+            return new CompletionPrompt();
         }
     }
 
-    private class CompletionPromt extends MessagePrompt {
+    private class CompletionPrompt extends MessagePrompt {
         @Nullable
         @Override
         protected Prompt getNextPrompt(@NotNull ConversationContext context) {

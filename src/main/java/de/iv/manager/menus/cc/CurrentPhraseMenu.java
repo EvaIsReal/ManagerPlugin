@@ -2,20 +2,16 @@ package de.iv.manager.menus.cc;
 
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
-import de.iv.manager.events.ConversationAbandonedListener;
+import de.iv.manager.events.IConversationAbandonedListener;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.PlayerMenuUtility;
-import de.iv.manager.models.BlacklistedPhrase;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class CurrentPhraseMenu extends Menu {
 
@@ -44,7 +40,7 @@ public class CurrentPhraseMenu extends Menu {
                 ConversationFactory factory = new ConversationFactory(Main.getInstance())
                         .withLocalEcho(false)
                         .withFirstPrompt(new EditPhraseFirstPrompt())
-                        .addConversationAbandonedListener(new ConversationAbandonedListener())
+                        .addConversationAbandonedListener(new IConversationAbandonedListener())
                         .withEscapeSequence("exit");
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
             }

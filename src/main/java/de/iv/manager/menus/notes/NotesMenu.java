@@ -11,15 +11,15 @@ package de.iv.manager.menus.notes;
 
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
+import de.iv.manager.events.IConversationAbandonedListener;
+import de.iv.manager.events.conversations.MessageCheckConversationCanceller;
 import de.iv.manager.menus.ManagerMenu;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.MenuManager;
-import de.iv.manager.models.Note;
 import de.iv.manager.utils.ItemBuilder;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
@@ -56,7 +56,9 @@ public class NotesMenu extends Menu {
                 playerMenuUtility.getOwner().closeInventory();
                 ConversationFactory factory = new ConversationFactory(Main.getInstance())
                         .withFirstPrompt(new CreateNoteFirstPrompt())
+                        .addConversationAbandonedListener(new IConversationAbandonedListener())
                         .withLocalEcho(false)
+                        .withConversationCanceller(new MessageCheckConversationCanceller())
                         .withEscapeSequence("exit").withTimeout(60);
 
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
