@@ -6,7 +6,9 @@
 package de.iv.manager.core;
 
 import de.iv.manager.SQL.SQLite;
+import de.iv.manager.commands.ChatHistoryCommand;
 import de.iv.manager.commands.CommandManager;
+import de.iv.manager.commands.tabcomplete.ChatHistoryTabCompleter;
 import de.iv.manager.events.*;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.cc.BlackListManager;
@@ -124,6 +126,9 @@ public class Main extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("manager").setExecutor(new CommandManager());
+
+        getCommand("chathistory").setExecutor(new ChatHistoryCommand());
+        getCommand("chathistory").setTabCompleter(new ChatHistoryTabCompleter());
     }
 
     private void registerListeners() {

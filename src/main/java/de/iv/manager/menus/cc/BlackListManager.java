@@ -42,6 +42,10 @@ public class BlackListManager {
         }
     }
 
+    public static boolean isBlacklisted(String s) {
+        return blacklistedPhrases.contains(s);
+    }
+
     public boolean removeFromList(String toRemove) throws ObjectNotContainedException {
         if(!blacklistedPhrases.contains(toRemove)) {
             throw new ObjectNotContainedException();

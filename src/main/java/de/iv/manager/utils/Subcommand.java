@@ -24,7 +24,7 @@ public abstract class Subcommand {
 
     public abstract String getSyntax();
 
-    public abstract ArrayList<String> aliases();
+    public abstract List<String> aliases();
 
 
     public abstract void execute(Player p, String[] args);

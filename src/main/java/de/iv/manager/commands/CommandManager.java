@@ -9,10 +9,7 @@ this project without permission!
 
 package de.iv.manager.commands;
 
-import de.iv.manager.commands.subcommands.NoteCommand;
-import de.iv.manager.commands.subcommands.NoteMenuCommand;
-import de.iv.manager.commands.subcommands.Test;
-import de.iv.manager.commands.subcommands.ToggleCommandLogging;
+import de.iv.manager.commands.subcommands.*;
 import de.iv.manager.core.ConfigManager;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
@@ -57,7 +54,7 @@ public class CommandManager implements CommandExecutor {
                 for(int i = 0; i < getSubcommands().size(); i++) {
                     if(p.hasPermission(getSubcommands().get(i).getPermission())) {
                         if(getSubcommands().get(i).aliases() == null) return true;
-                        if(args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
+                        if(args[0].equalsIgnoreCase(getSubcommands().get(i).getName()) | getSubcommands().get(i).aliases().contains(args[0])) {
                             //Execute command
                             getSubcommands().get(i).execute(p, args);
                             String name = getSubcommands().get(i).getName();

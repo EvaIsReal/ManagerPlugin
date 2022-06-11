@@ -10,12 +10,16 @@ commands:
   manager:
     aliases: m
     description: Zeigt alle Commands des Manager-Plugins
+  chathistory:
+    aliases: ch
+    description: Erfasse die zuletzt geschriebenen Nachrichten eines Spielers
 permissions:
   manager:
     showNoteMenu:
-    description: Zeigt das Note-Menu
+      description: Zeigt das Note-Menu
     seeNoteCreationLog:
     seeCommandLog:
+    seeChatHistory:
 
     player:
       chat_format

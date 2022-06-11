@@ -4,6 +4,7 @@ import de.iv.manager.core.ConfigManager;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.events.IConversationAbandonedListener;
+import de.iv.manager.events.conversations.MessageCheckConversationCanceller;
 import de.iv.manager.menus.ManagerMenu;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.MenuManager;
@@ -49,6 +50,7 @@ public class ServerSettingsMenu extends Menu {
                         .withFirstPrompt(new ChangeMotdFirstPrompt())
                         .withEscapeSequence("exit")
                         .addConversationAbandonedListener(new IConversationAbandonedListener())
+                        .withConversationCanceller(new MessageCheckConversationCanceller())
                         .withLocalEcho(false);
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
             }

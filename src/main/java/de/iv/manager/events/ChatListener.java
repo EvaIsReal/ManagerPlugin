@@ -14,6 +14,7 @@ import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.events.custom.IPlayerChatEvent;
 import de.iv.manager.menus.cc.BlackListManager;
+import de.iv.manager.security.AdminSettings;
 import de.iv.manager.utils.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,8 @@ public class ChatListener implements Listener {
 
         FileConfiguration cfg = ConfigManager.getInstance().getMessages().toFileConfiguration();
         e.setCancelled(true);
+
+        AdminSettings.handleHistory(e);
 
         for (String s : BlackListManager.getBlacklistedPhrases()) {
             if (e.getMessage().toLowerCase().contains(s.toLowerCase())) {

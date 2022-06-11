@@ -11,6 +11,8 @@ package de.iv.manager.menus.notes;
 
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
+import de.iv.manager.events.IConversationAbandonedListener;
+import de.iv.manager.events.conversations.MessageCheckConversationCanceller;
 import de.iv.manager.menus.Menu;
 import de.iv.manager.menus.MenuManager;
 import de.iv.manager.menus.PlayerMenuUtility;
@@ -57,6 +59,8 @@ public class CurrentNoteMenu extends Menu {
                 ConversationFactory factory = new ConversationFactory(Main.getInstance())
                                 .withFirstPrompt(new EditNoteFirstPrompt())
                                 .withLocalEcho(false)
+                        .addConversationAbandonedListener(new IConversationAbandonedListener())
+                                .withConversationCanceller(new MessageCheckConversationCanceller())
                                 .withEscapeSequence("exit").withTimeout(60);
 
                 factory.buildConversation(playerMenuUtility.getOwner()).begin();
@@ -70,7 +74,7 @@ public class CurrentNoteMenu extends Menu {
             case LAVA_BUCKET:
                 NoteStorageUtil.deleteNote(noteID);
                 playerMenuUtility.getOwner().sendMessage(Vars.color(Vars.PREFIX + "Note &6" + note.getNoteID().substring(0, 10) + "... &7wurde gelöscht."));
-                playerMenuUtility.getOwner().closeInventory();
+                MenuManager.openMenu(NoteListMenu.class, playerMenuUtility.getOwner());
                 break;
         }
     }
