@@ -1,0 +1,16 @@
+# Time between file-updates in the ServerManager/persistentData directory in minutes
+UpdatePersistentData: 5
+
+# Set to true if you wish to use a Mysql-database
+UseMysql: false
+
+# Mysql settings
+# Paste in your login information to connect your Mysql-DB. This only works if 'UseMysql' is set to true
+MySQL:
+  Host: localhost
+  User: root
+  Database: manager
+  Password: admin
+  Port: 3306
+  Properties: 'verifyServerCertificate=false&useSSL=false&useUnicode=true&characterEncoding=utf8'
+

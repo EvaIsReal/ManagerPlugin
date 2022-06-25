@@ -10,7 +10,7 @@ this project without permission!
 package de.iv.manager.commands;
 
 import de.iv.manager.commands.subcommands.*;
-import de.iv.manager.core.ConfigManager;
+import de.iv.manager.core.FileManager;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.ManagerMenu;
@@ -18,8 +18,6 @@ import de.iv.manager.menus.MenuManager;
 import de.iv.manager.utils.LoggableCommand;
 import de.iv.manager.utils.Subcommand;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +26,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class CommandManager implements CommandExecutor {
@@ -42,7 +39,7 @@ public class CommandManager implements CommandExecutor {
         subcommands.add(new NoteMenuCommand());
     }
 
-    FileConfiguration cfg = ConfigManager.getInstance().getMessages().toFileConfiguration();
+    FileConfiguration cfg = FileManager.getConfig("messages.yml");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

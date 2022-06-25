@@ -1,6 +1,6 @@
 package de.iv.manager.menus.settings;
 
-import de.iv.manager.core.ConfigManager;
+import de.iv.manager.core.FileManager;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.events.IConversationAbandonedListener;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -81,7 +82,7 @@ public class ServerSettingsMenu extends Menu {
         inventory.setItem(10, new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aÄndere die Modt")).setLore(Vars.color("&7Setze die Modt des Servers"),
                 Vars.color("&7(Die Nachricht in der Server-Liste)"),
                 "",
-                "§7'" + (String) ConfigManager.getInstance().getMessages().toFileConfiguration().get("Out.Server.Motd") + "§7'").build());
+                "§7'" + (String) FileManager.getConfig("messages.yml").get("ServerMotd") + "§7'").build());
         inventory.setItem(35, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Vars.color("&r;)")).build());
         inventory.setItem(31, new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build());
 
@@ -130,8 +131,8 @@ public class ServerSettingsMenu extends Menu {
         @Nullable
         @Override
         public Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            ConfigManager.getInstance().getMessages().toFileConfiguration().set("Out.Server.Motd", Vars.color(input));
-            ConfigManager.getInstance().getMessages().save();
+            FileManager.getConfig("messages.yml").set("ServerMotd", input);
+            FileManager.save("messages.yml");
             context.setSessionData("newMotd", input);
             return new CompletionPrompt();
         }

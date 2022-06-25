@@ -1,12 +1,10 @@
 package de.iv.manager.SQL;
 
 
-import de.iv.manager.core.ConfigManager;
+import de.iv.manager.core.FileManager;
 import de.iv.manager.core.Main;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.util.Objects;
 
 /**
  * This Class provides Methods for communicating with java.sql based Databases
@@ -19,7 +17,7 @@ public class Database {
 
     private static Connection connection() {
         Connection connection;
-        return (!ConfigManager.getInstance().getSettings().toFileConfiguration().getBoolean("Settings.Data.useMysql") ? connection = SQLite.connection : null);
+        return (!FileManager.getConfig("settings.yml").getBoolean("Settings.Data.useMysql") ? connection = SQLite.connection : null);
     }
 
     public static void update(String sql) {

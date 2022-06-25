@@ -9,13 +9,9 @@ this project without permission!
 
 package de.iv.manager.events;
 
-import de.iv.manager.core.ConfigManager;
-import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
-import de.iv.manager.events.custom.IPlayerChatEvent;
 import de.iv.manager.menus.cc.BlackListManager;
 import de.iv.manager.security.AdminSettings;
-import de.iv.manager.utils.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -26,8 +22,6 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onMessageSent(AsyncPlayerChatEvent e) {
-
-        FileConfiguration cfg = ConfigManager.getInstance().getMessages().toFileConfiguration();
         e.setCancelled(true);
 
         AdminSettings.handleHistory(e);

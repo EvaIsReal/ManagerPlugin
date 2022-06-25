@@ -9,18 +9,14 @@ this project without permission!
 
 package de.iv.manager.menus.ban;
 
-import de.iv.manager.core.Config;
-import de.iv.manager.core.ConfigManager;
-import de.iv.manager.core.Main;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 public class BanManager {
 
-    static FileConfiguration cfg = ConfigManager.getInstance().getBannedPlayers().toFileConfiguration();
+    //static FileConfiguration cfg = ConfigManager.getInstance().getBannedPlayers().toFileConfiguration();
 
     public static void setTempbanned(String banningInstance, long time, String... reason) {
-        cfg.options().copyDefaults(true);
+        //cfg.options().copyDefaults(true);
         
     }
 

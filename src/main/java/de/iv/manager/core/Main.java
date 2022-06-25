@@ -8,7 +8,6 @@ package de.iv.manager.core;
 import de.iv.manager.SQL.SQLite;
 import de.iv.manager.commands.ChatHistoryCommand;
 import de.iv.manager.commands.CommandManager;
-import de.iv.manager.commands.tabcomplete.ChatHistoryTabCompleter;
 import de.iv.manager.events.*;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.cc.BlackListManager;
@@ -22,6 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
-
 
 
     private String currentStorage;
@@ -50,13 +49,14 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         //Plugin startup logic
         instance = this;
-        ConfigManager configManager = new ConfigManager();
+        //ConfigManager configManager = new ConfigManager();
         FileManager fileManager = new FileManager();
         DataManager dataManager = new DataManager();
 
+        FileManager.registerConfigs();
 
         //Connect SQLite
-        if(!ConfigManager.getInstance().getSettings().toFileConfiguration().getBoolean("Settings.Data.useMysql")) {
+        if (!FileManager.getConfig("settings.yml").getBoolean("UseMysql")) {
             try {
                 SQLite.connect();
                 logInfo("NOT USING MYSQL, USING SQLITE INSTEAD");
@@ -70,7 +70,6 @@ public class Main extends JavaPlugin {
         } else {
             //Connect Mysql
         }
-
         //Load dirs in ServerManager/persistentData/
         try {
             NoteStorageUtil.loadNotes();
@@ -94,8 +93,8 @@ public class Main extends JavaPlugin {
                     e.printStackTrace();
                 }
             }
-        }.runTaskTimer(instance, 0, 20L *60*ConfigManager.
-                getInstance().getSettings().toFileConfiguration().getInt("Settings.threading.updatePersistentData"));
+        }.runTaskTimer(instance, 0, 20L * 60 * FileManager.getConfig("settings.yml")
+                        .getInt("UpdatePersistentData"));
 
 
         //Registering commands and listeners
@@ -128,7 +127,7 @@ public class Main extends JavaPlugin {
         getCommand("manager").setExecutor(new CommandManager());
 
         getCommand("chathistory").setExecutor(new ChatHistoryCommand());
-        getCommand("chathistory").setTabCompleter(new ChatHistoryTabCompleter());
+        getCommand("chathistory").setTabCompleter(new ChatHistoryCommand());
     }
 
     private void registerListeners() {
@@ -145,7 +144,7 @@ public class Main extends JavaPlugin {
     //Utility methods
 
     public static void logInfo(String x) {
-       getInstance().getLogger().info(x);
+        getInstance().getLogger().info(x);
     }
 
     public static void logWarn(String x) {
@@ -159,7 +158,7 @@ public class Main extends JavaPlugin {
 
     public static PlayerMenuUtility getPlayerMenuUtility(Player p) {
         PlayerMenuUtility playerMenuUtility;
-        if(playerMenuUtilityMap.containsKey(p)) {
+        if (playerMenuUtilityMap.containsKey(p)) {
             return playerMenuUtilityMap.get(p);
         } else {
             playerMenuUtility = new PlayerMenuUtility(p);

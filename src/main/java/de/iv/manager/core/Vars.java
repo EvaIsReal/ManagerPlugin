@@ -8,6 +8,7 @@ package de.iv.manager.core;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class Vars {
 
@@ -16,9 +17,12 @@ public class Vars {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    public static String PREFIX = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Prefix.Main_Prefix");
-    public static String ERROR = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Commands.Exceptions.Prefix");
-    public static String SERVER_LOG = ConfigManager.getInstance().getMessages().toFileConfiguration().getString("Console.Prefix.CommandLogger");
+    private static FileConfiguration cfg = FileManager.getConfig("messages.yml");
+
+    public static String PREFIX = cfg.getString("MainPrefix");
+    public static String ERROR = cfg.getString("ErrorPrefix");
+    public static String GENERIC_ERROR;
+    public static String SERVER_LOG = cfg.getString("LogPrefix");
 
 
 
