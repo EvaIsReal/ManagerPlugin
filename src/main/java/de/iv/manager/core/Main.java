@@ -16,6 +16,7 @@ import de.iv.manager.regions.RegionManager;
 import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,20 +59,25 @@ public class Main extends JavaPlugin {
 
         FileManager.registerConfigs();
 
+
         //Connect SQLite
-        if (!FileManager.getConfig("settings.yml").getBoolean("UseMysql")) {
-            try {
-                SQLite.connect();
-                logInfo("NOT USING MYSQL, USING SQLITE INSTEAD");
-                Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Falls du eine Mysql-Datenbank benutzen willst, kannst du diese in der " +
-                        "&9&oSettings.yml&7-Datei aktivieren."));
-                Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Trage die Anmeldedaten in die &9&oMysql.yml&7-Datei ein."));
-                setCurrentStorage("SQLite");
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try {
+            if (!FileManager.getConfig("settings.yml").getBoolean("UseMysql")) {
+                try {
+                    SQLite.connect();
+                    logInfo("NOT USING MYSQL, USING SQLITE INSTEAD");
+                    Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Falls du eine Mysql-Datenbank benutzen willst, kannst du diese in der " +
+                            "&9&oSettings.yml&7-Datei aktivieren."));
+                    Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Trage die Anmeldedaten in die &9&oMysql.yml&7-Datei ein."));
+                    setCurrentStorage("SQLite");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //Connect Mysql
             }
-        } else {
-            //Connect Mysql
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
         //Load dirs in ServerManager/persistentData/
         try {
@@ -84,17 +93,21 @@ public class Main extends JavaPlugin {
         BlackListManager.loadPhrases();
 
         //Setting saving timer for persistent data
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    NoteStorageUtil.saveNotesPersistently();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        try {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        NoteStorageUtil.saveNotesPersistently();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }.runTaskTimer(instance, 0, 20L * 60 * FileManager.getConfig("settings.yml")
-                        .getInt("UpdatePersistentData"));
+            }.runTaskTimer(instance, 0, 20L * 60 * FileManager.getConfig("settings.yml")
+                            .getInt("UpdatePersistentData"));
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
 
 
         //Registering commands and listeners

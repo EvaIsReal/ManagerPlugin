@@ -16,7 +16,8 @@ public class ConfigurationFile {
 
     public ConfigurationFile(String resourceName, File path) {
         try {
-            createConfigFromResource(resourceName, path);
+            File file = new File(path, resourceName);
+            if(!file.exists()) createConfigFromResource(resourceName, path);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,14 +45,6 @@ public class ConfigurationFile {
         }
     }
 
-    public void save() {
-        try {
-            cfg.save(source);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void createConfigFromSource(File source) throws IOException {
         if(!source.exists()) {
             source.getParentFile().mkdirs();
@@ -65,13 +58,5 @@ public class ConfigurationFile {
         }
 
 
-    }
-
-    public File getSource() {
-        return source;
-    }
-
-    public FileConfiguration toFileConfiguration() {
-        return cfg;
     }
 }

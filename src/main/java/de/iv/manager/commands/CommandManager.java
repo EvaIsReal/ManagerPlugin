@@ -21,9 +21,11 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +41,15 @@ public class CommandManager implements CommandExecutor {
         subcommands.add(new NoteMenuCommand());
     }
 
-    FileConfiguration cfg = FileManager.getConfig("messages.yml");
+    FileConfiguration cfg;
+
+    {
+        try {
+            cfg = FileManager.getConfig("messages.yml");
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

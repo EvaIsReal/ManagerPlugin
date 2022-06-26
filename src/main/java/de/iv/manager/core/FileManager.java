@@ -10,10 +10,16 @@ this project without permission!
 package de.iv.manager.core;
 
 import de.iv.manager.config.ConfigurationFile;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileManager {
 
@@ -38,7 +44,7 @@ public class FileManager {
 
 
     }
-
+    /*
     public static FileConfiguration getConfig(String fileName) {
         for (ConfigurationFile config : configs) {
             if(config.getSource().getName().equals(fileName)) {
@@ -47,12 +53,44 @@ public class FileManager {
         }
         return null;
     }
+     */
+
+    public static FileConfiguration getConfig(String fileName) throws IOException, InvalidConfigurationException {
+        FileConfiguration cfg;
+        for(File file : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
+            if(file.getName().equals(fileName)) {
+                cfg = YamlConfiguration.loadConfiguration(file);
+                return cfg;
+            }
+        }
+        return null;
+    }
+
+
+    public static File getSource(String fileName) {
+        File file;
+        for(File n : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
+            if(n.getName().equals(fileName)) {
+                file = n;
+                return file;
+            }
+        }
+
+        return null;
+    }
+
 
     public static void save(String fileName) {
-        for (ConfigurationFile config : configs) {
-            if(config.getSource().getName().equals(fileName)) {
-                config.save();
-                break;
+        FileConfiguration cfg;
+        for(File file : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
+            if(file.getName().equals(fileName)) {
+                cfg = YamlConfiguration.loadConfiguration(file);
+                try {
+                    cfg.save(file);
+                    System.out.println("SAVED CONFIG " + file.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

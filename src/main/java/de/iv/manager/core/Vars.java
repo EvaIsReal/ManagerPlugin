@@ -8,7 +8,15 @@ package de.iv.manager.core;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Vars {
 
@@ -17,12 +25,27 @@ public class Vars {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    private static FileConfiguration cfg = FileManager.getConfig("messages.yml");
+    private static FileConfiguration cfg;
+
+    static {
+        try {
+            cfg = FileManager.getConfig("messages.yml");
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static String PREFIX = cfg.getString("MainPrefix");
     public static String ERROR = cfg.getString("ErrorPrefix");
     public static String GENERIC_ERROR;
     public static String SERVER_LOG = cfg.getString("LogPrefix");
+
+    public static Set<String> listFilesUsingJavaIO(String dir) {
+        return Stream.of(Objects.requireNonNull(new File(dir).listFiles()))
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet());
+    }
 
 
 

@@ -3,7 +3,9 @@ package de.iv.manager.SQL;
 
 import de.iv.manager.core.FileManager;
 import de.iv.manager.core.Main;
+import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.io.IOException;
 import java.sql.*;
 
 /**
@@ -17,7 +19,11 @@ public class Database {
 
     private static Connection connection() {
         Connection connection;
-        return (!FileManager.getConfig("settings.yml").getBoolean("Settings.Data.useMysql") ? connection = SQLite.connection : null);
+        try {
+            return (!FileManager.getConfig("settings.yml").getBoolean("Settings.Data.useMysql") ? connection = SQLite.connection : null);
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void update(String sql) {

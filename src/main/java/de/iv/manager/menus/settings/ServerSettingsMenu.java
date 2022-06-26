@@ -14,6 +14,8 @@ import de.iv.manager.menus.plugins.PluginListMenu;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -25,6 +27,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 
 public class ServerSettingsMenu extends Menu {
 
@@ -79,10 +82,14 @@ public class ServerSettingsMenu extends Menu {
     @Override
     public void setMenuItems() {
         setFillerGlass();
-        inventory.setItem(10, new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aÄndere die Modt")).setLore(Vars.color("&7Setze die Modt des Servers"),
-                Vars.color("&7(Die Nachricht in der Server-Liste)"),
-                "",
-                "§7'" + (String) FileManager.getConfig("messages.yml").get("ServerMotd") + "§7'").build());
+        try {
+            inventory.setItem(10, new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aÄndere die Modt")).setLore(Vars.color("&7Setze die Modt des Servers"),
+                    Vars.color("&7(Die Nachricht in der Server-Liste)"),
+                    "",
+                    "§7'" + (String) FileManager.getConfig("messages.yml").get("ServerMotd") + "§7'").build());
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
         inventory.setItem(35, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Vars.color("&r;)")).build());
         inventory.setItem(31, new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build());
 
@@ -131,8 +138,13 @@ public class ServerSettingsMenu extends Menu {
         @Nullable
         @Override
         public Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            FileManager.getConfig("messages.yml").set("ServerMotd", input);
-            FileManager.save("messages.yml");
+            try {
+                FileConfiguration cfg = FileManager.getConfig("messages.yml");
+                cfg.set("ServerMotd", input);
+                cfg.save(FileManager.getSource("messages.yml"));
+            } catch (IOException | InvalidConfigurationException e) {
+                throw new RuntimeException(e);
+            }
             context.setSessionData("newMotd", input);
             return new CompletionPrompt();
         }
