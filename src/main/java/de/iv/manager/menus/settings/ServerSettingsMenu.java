@@ -24,10 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Objects;
 
 public class ServerSettingsMenu extends Menu {
 
@@ -86,7 +84,7 @@ public class ServerSettingsMenu extends Menu {
             inventory.setItem(10, new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aÄndere die Modt")).setLore(Vars.color("&7Setze die Modt des Servers"),
                     Vars.color("&7(Die Nachricht in der Server-Liste)"),
                     "",
-                    "§7'" + (String) FileManager.getConfig("messages.yml").get("ServerMotd") + "§7'").build());
+                    "§7'" + (String) FileManager.getConfig("lang/en/messages.yml").get("ServerMotd") + "§7'").build());
         } catch (IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -139,9 +137,9 @@ public class ServerSettingsMenu extends Menu {
         @Override
         public Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             try {
-                FileConfiguration cfg = FileManager.getConfig("messages.yml");
+                FileConfiguration cfg = FileManager.getConfig("lang/en/messages.yml");
                 cfg.set("ServerMotd", input);
-                cfg.save(FileManager.getSource("messages.yml"));
+                cfg.save(FileManager.getSource("lang/en/messages.yml"));
             } catch (IOException | InvalidConfigurationException e) {
                 throw new RuntimeException(e);
             }

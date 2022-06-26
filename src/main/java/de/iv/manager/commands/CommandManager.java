@@ -18,6 +18,7 @@ import de.iv.manager.menus.MenuManager;
 import de.iv.manager.utils.LoggableCommand;
 import de.iv.manager.utils.Subcommand;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,6 +26,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +43,7 @@ public class CommandManager implements CommandExecutor {
         subcommands.add(new NoteMenuCommand());
     }
 
-    FileConfiguration cfg;
-
-    {
-        try {
-            cfg = FileManager.getConfig("messages.yml");
-        } catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    FileConfiguration cfg = Main.getInstance().getMessageConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -68,22 +62,23 @@ public class CommandManager implements CommandExecutor {
                             if(getSubcommands().get(i) instanceof LoggableCommand) {
                                 Main.loggablePlayers.forEach(a -> {
                                         String replace = PlaceholderAPI.setPlaceholders(p, "%player_name%");
-                                        a.sendMessage(Vars.color(Vars.SERVER_LOG + "Der Befehl &o" + name + "&7 wurde von&9 " + replace + " &7ausgeführt."));
+                                        a.sendMessage(Vars.color(Vars.SERVER_LOG + Objects.requireNonNull(cfg.getString("Commands.ManagerCommandLogAlert"))
+                                                .replace("%%cmd", ChatColor.BLUE + command.getName()).replace("%sender%", ChatColor.BLUE + sender.getName())));
                                 });
                             }
 
 
 
-                        }
-                         //else p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString("Console.Commands.Exceptions.CommandNullpointerException"))));
+                        } else p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNullpointerException"))));
 
                     } else {
-                        p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString("Console.Commands.Exceptions.InvalidPermissionsException"))));
+                        p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNoPermissionException"))));
                         break;
                     }
                 }
+            } else if(args.length == 1 && args[0].equalsIgnoreCase("help")) {
+                p.sendMessage(Vars.color(Vars.PREFIX + cfg.getString("Commands.ManagerHelpCallback")));
             } else {
-
                 MenuManager.openMenu(ManagerMenu.class, p);
 
                 /**

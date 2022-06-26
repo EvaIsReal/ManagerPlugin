@@ -14,14 +14,10 @@ import de.iv.manager.utils.DataManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
-import org.yaml.snakeyaml.Yaml;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -54,8 +50,11 @@ public class FileManager {
     }
 
     public static void registerConfigs() {
-        ConfigurationFile msg = new ConfigurationFile("messages.yml", Main.getInstance().getDataFolder());
-        configs.add(msg);
+        ConfigurationFile msgEn = new ConfigurationFile("lang/en/messages.yml", Main.getInstance().getDataFolder());
+        configs.add(msgEn);
+
+        ConfigurationFile msgDe = new ConfigurationFile("lang/de/messages.yml", Main.getInstance().getDataFolder());
+        configs.add(msgDe);
 
         ConfigurationFile stt = new ConfigurationFile("settings.yml", Main.getInstance().getDataFolder());
         configs.add(stt);
@@ -77,6 +76,23 @@ public class FileManager {
 
     public static FileConfiguration getConfig(String fileName) throws IOException, InvalidConfigurationException {
         FileConfiguration cfg;
+        String lang = Main.getInstance().getLanguage();
+        File langFile;
+
+        if(fileName.contains("messages.yml")) {
+            if(Main.getInstance().getLanguage().equals("en")) {
+                langFile = new File(Main.getInstance().getDataFolder() + "/lang/en", "messages.yml");
+                cfg = YamlConfiguration.loadConfiguration(langFile);
+                return cfg;
+
+            } else if(Main.getInstance().getLanguage().equals("de")) {
+                langFile = new File(Main.getInstance().getDataFolder() + "/lang/de", "messages.yml");
+                cfg = YamlConfiguration.loadConfiguration(langFile);
+                return cfg;
+            }
+
+        }
+
         for(File file : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
             if(file.getName().equals(fileName)) {
                 cfg = YamlConfiguration.loadConfiguration(file);

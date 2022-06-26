@@ -7,13 +7,18 @@ UseMysql: false
 # Set to true if you wish to save a file with all chat messages and their respective players since the last server start
 LogChatAfterShutdown: false
 
+# Change this plugin's language. Currently supported:
+# English: en
+# German:  de
+Language: "en"
+
 # Mysql settings
 # Paste in your login information to connect your Mysql-DB. This only works if 'UseMysql' is set to true
 MySQL:
-  Host: localhost
-  User: root
-  Database: manager
-  Password: admin
+  Host: "localhost"
+  User: "root"
+  Database: "manager"
+  Password: "admin"
   Port: 3306
   Properties: 'verifyServerCertificate=false&useSSL=false&useUnicode=true&characterEncoding=utf8'
 

@@ -51,11 +51,11 @@ public class ToggleCommandLogging extends Subcommand {
     public void execute(Player p, String[] args) {
         if(Main.loggablePlayers.contains(p)) {
             Main.loggablePlayers.remove(p);
-            p.sendMessage(Vars.color(Vars.SERVER_LOG + "Ausgeführte Befehle werden &cnicht &7mehr angezeigt."));
+            p.sendMessage(Vars.color(Vars.SERVER_LOG + Main.getInstance().getMessageConfig().getString("Commands.ManagerCmdLogOff")));
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
         } else {
             Main.loggablePlayers.add(p);
-            p.sendMessage(Vars.color(Vars.SERVER_LOG + "Ausgeführte Befehle werden angezeigt."));
+            p.sendMessage(Vars.color(Vars.SERVER_LOG + Main.getInstance().getMessageConfig().getString("Commands.ManagerCmdLogOn")));
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         }
     }

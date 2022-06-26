@@ -15,7 +15,7 @@ public class ServerPingListener implements Listener {
     public void onServerPing(ServerListPingEvent e) {
         String motd = null;
         try {
-            motd = FileManager.getConfig("messages.yml").getString("ServerMotd");
+            motd = FileManager.getConfig("lang/en/messages.yml").getString("ServerMotd");
         } catch (IOException | InvalidConfigurationException ex) {
             throw new RuntimeException(ex);
         }

@@ -1,7 +1,5 @@
 TODO:
     -Moderation
         -Ticket-System
-    -ChatControl
-        -chatHistory
     -PlayerMenu
     -complete Server settings

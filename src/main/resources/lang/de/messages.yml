@@ -1,0 +1,33 @@
+#
+
+# Prefixes for plugin-messages.
+MainPrefix: '&b&lServerManager &8| &7'
+ErrorPrefix: '&4&lERROR &8| &c'
+LogPrefix: '&9&lServerLog &8| &7'
+
+# Messages displayed when an exception occurs
+ExceptionMessages:
+  InvalidArrayLengthException: '&cDie Angegebene Argumentenlänge stimmt nicht mit der Erwartung überein.'
+  CommandNoPermissionException: '&cYou are not permitted to execute this command'
+  PlayerNullpointerException: '&cThe given player could not be found'
+  CommandNullpointerException: '&cThe given command could not be found'
+  GenericError: "&cAn exception with the following message has been thrown:\n &c&o"
+
+# Messages only displayed in the server's console
+Console:
+  MysqlHint: '&7If you wish to use a &9MySQL-database&7, activate it in your &9settings.yml &7file.'
+  StartupMessage: '&aPlugin loaded successfully!'
+
+# Messages displayed in-game
+Commands:
+  ManagerHelpCallback: "Visit our Website to get all the necessary information about this plugin."
+  ManagerCommandLogAlert: "The command %cmd% was executed by %sender%"
+  ManagerCmdLogOn: "Ausgeführte Befehle werden nun angezeigt und aufgezeichnet."
+  ManagerCmdLogOff: "Ausgeführte befehle werden nicht mehr angezeigt."
+
+
+# The Server's 'message of the day' i.e. the message displayed in Minecraft's server-list
+ServerMotd: '&aServerManager by Iv'
+
+
+

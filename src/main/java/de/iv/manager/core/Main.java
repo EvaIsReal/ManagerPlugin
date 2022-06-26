@@ -18,20 +18,18 @@ import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
@@ -41,9 +39,10 @@ public class Main extends JavaPlugin {
     private static Main instance;
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static final ArrayList<Player> loggablePlayers = new ArrayList<>();
-
     private RegionManager regionManager = new RegionManager();
     public ArrayList<String> chat = new ArrayList<>();
+    private String language;
+    private FileConfiguration messages;
 
     Logger logger = this.getLogger();
 
@@ -59,6 +58,17 @@ public class Main extends JavaPlugin {
         FileManager.setup();
         DataManager dataManager = new DataManager();
 
+        try {
+            language = FileManager.getConfig("settings.yml").getString("Language");
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            messages = FileManager.getConfig(getDataFolder() + "/lang/" + language + "/messages.yml");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
 
         //Connect SQLite
@@ -198,11 +208,20 @@ public class Main extends JavaPlugin {
         this.currentStorage = currentStorage;
     }
 
-    public RegionManager getRegionManager() {
-        return regionManager;
-    }
+     public RegionManager getRegionManager() {
+            return regionManager;
+     }
+
 
     public ArrayList<String> getChat() {
         return chat;
+    }
+
+    public FileConfiguration getMessageConfig() {
+        return messages;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 }

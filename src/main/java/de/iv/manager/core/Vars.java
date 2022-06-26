@@ -6,7 +6,6 @@
 package de.iv.manager.core;
 
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,15 +24,7 @@ public class Vars {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    private static FileConfiguration cfg;
-
-    static {
-        try {
-            cfg = FileManager.getConfig("messages.yml");
-        } catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static FileConfiguration cfg = Main.getInstance().getMessageConfig();
 
     public static String PREFIX = cfg.getString("MainPrefix");
     public static String ERROR = cfg.getString("ErrorPrefix");
