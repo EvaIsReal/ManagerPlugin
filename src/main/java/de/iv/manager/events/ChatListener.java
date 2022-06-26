@@ -9,19 +9,30 @@ this project without permission!
 
 package de.iv.manager.events;
 
+import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.cc.BlackListManager;
 import de.iv.manager.security.AdminSettings;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 public class ChatListener implements Listener {
 
     @EventHandler
     public void onMessageSent(AsyncPlayerChatEvent e) {
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+
+        Main.getInstance().getChat().add( "[" + formatter.format(date) + "] " + e.getPlayer().getName() + " -> " +  ChatColor.stripColor(e.getMessage()));
         e.setCancelled(true);
 
         AdminSettings.handleHistory(e);

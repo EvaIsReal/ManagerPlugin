@@ -11,6 +11,7 @@ ExceptionMessages:
   CommandNoPermissionException: '&cYou are not permitted to execute this command'
   PlayerNullpointerException: '&cThe given player could not be found'
   CommandNullpointerException: '&cThe given command could not be found'
+  GenericError: "&cAn exception with the following message has been thrown:\n &c&o"
 
 
 # The Server's 'message of the day' i.e. the message displayed in Minecraft's server-list

@@ -37,7 +37,7 @@ public class Vars {
 
     public static String PREFIX = cfg.getString("MainPrefix");
     public static String ERROR = cfg.getString("ErrorPrefix");
-    public static String GENERIC_ERROR;
+    public static String GENERIC_ERROR = cfg.getString("ExceptionMessages.GenericError");
     public static String SERVER_LOG = cfg.getString("LogPrefix");
 
     public static Set<String> listFilesUsingJavaIO(String dir) {

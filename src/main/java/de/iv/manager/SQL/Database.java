@@ -15,7 +15,6 @@ import java.sql.*;
  */
 public class Database {
 
-    private static Statement statement;
 
     private static Connection connection() {
         Connection connection;
@@ -26,9 +25,21 @@ public class Database {
         }
     }
 
+    private static Statement statement;
+
+    static {
+        try {
+            statement = SQLite.getConnection().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void update(String sql) {
         try {
             statement.execute(sql);
+            FileManager.dbLog(sql);
         } catch (SQLException e) {
             Main.logWarn(e.getMessage());
         }
@@ -36,6 +47,10 @@ public class Database {
 
     public static ResultSet query(String sql) throws SQLException {
         return statement.executeQuery(sql);
+    }
+
+    public static void setup() {
+        update("CREATE TABLE IF NOT EXISTS users(userName VARCHAR(16))");
     }
 
     public static PreparedStatement prepareStatement(String sql) {

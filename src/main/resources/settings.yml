@@ -4,6 +4,9 @@ UpdatePersistentData: 5
 # Set to true if you wish to use a Mysql-database
 UseMysql: false
 
+# Set to true if you wish to save a file with all chat messages and their respective players since the last server start
+LogChatAfterShutdown: false
+
 # Mysql settings
 # Paste in your login information to connect your Mysql-DB. This only works if 'UseMysql' is set to true
 MySQL:

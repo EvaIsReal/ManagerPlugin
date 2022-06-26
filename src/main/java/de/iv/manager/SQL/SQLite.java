@@ -15,20 +15,20 @@ public class SQLite {
     private static File dbFile = new File(Main.getInstance().getDataFolder() + "/data", "database.db");
 
     public static void connect() throws SQLException {
+        System.out.println(dbFile.getAbsolutePath());
         if(connection != null) return;
         if(!dbFile.exists()) {
             try {
                 dbFile.createNewFile();
-
-                String jdbcUrl = "jdbc:sqlite:" + dbFile.getPath();
-                connection = DriverManager.getConnection(jdbcUrl);
-
-                Main.logInfo("SQLite verbunden!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
+            String jdbcUrl = "jdbc:sqlite:" + dbFile.getPath();
+            connection = DriverManager.getConnection(jdbcUrl);
+
+            Main.logInfo("SQLite verbunden!");
+        }
 
     public static void disconnect() {
         if(connection != null) {
@@ -41,6 +41,7 @@ public class SQLite {
         }
     }
 
-
-
+    public static Connection getConnection() {
+        return connection;
+    }
 }

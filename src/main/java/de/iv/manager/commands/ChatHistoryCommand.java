@@ -33,11 +33,17 @@ public class ChatHistoryCommand implements CommandExecutor, TabCompleter {
                                 sender.sendMessage(Vars.color(Vars.SERVER_LOG + ChatColor.RED + AdminSettings.getChatHistory(target).get(i)));
                         }
                     } else if (args.length == 2) {
-                        int maxLines = Integer.parseInt(args[1]);
-                        sender.sendMessage(Vars.color(Vars.SERVER_LOG + "Der Spieler &9" + target.getName() + " &7hat seit dem letzten Serverrestart folgende Nachrichten geschickt:"), Vars.color("&7Limit: &9" + maxLines), "");
-                        for (int i = 0; i < AdminSettings.getChatHistory(target, maxLines).size(); i++) {
-                            sender.sendMessage(Vars.color(Vars.SERVER_LOG + AdminSettings.getChatHistory(target, maxLines).get(i)));
+                        try {
+                            int maxLines = Integer.parseInt(args[1]);
+                            sender.sendMessage(Vars.color(Vars.SERVER_LOG + "Der Spieler &9" + target.getName() + " &7hat seit dem letzten Serverrestart folgende Nachrichten geschickt:"), Vars.color("&7Limit: &9" + maxLines), "");
+                            for (int i = 0; i < AdminSettings.getChatHistory(target, maxLines).size(); i++) {
+                                sender.sendMessage(Vars.color(Vars.SERVER_LOG + AdminSettings.getChatHistory(target, maxLines).get(i)));
+                            }
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                            sender.sendMessage(Vars.color(Vars.ERROR + Vars.GENERIC_ERROR + e.getMessage()));
                         }
+
                     }
                 } else sender.sendMessage(Vars.color(Vars.ERROR + "Es befinden sich keine Nachrichten dieses Spielers im Chat-Log"));
 

@@ -5,6 +5,7 @@
 
 package de.iv.manager.core;
 
+import de.iv.manager.SQL.Database;
 import de.iv.manager.SQL.SQLite;
 import de.iv.manager.commands.ChatHistoryCommand;
 import de.iv.manager.commands.CommandManager;
@@ -42,6 +43,7 @@ public class Main extends JavaPlugin {
     public static final ArrayList<Player> loggablePlayers = new ArrayList<>();
 
     private RegionManager regionManager = new RegionManager();
+    public ArrayList<String> chat = new ArrayList<>();
 
     Logger logger = this.getLogger();
 
@@ -54,10 +56,9 @@ public class Main extends JavaPlugin {
         //Plugin startup logic
         instance = this;
         //ConfigManager configManager = new ConfigManager();
-        FileManager fileManager = new FileManager();
+        FileManager.setup();
         DataManager dataManager = new DataManager();
 
-        FileManager.registerConfigs();
 
 
         //Connect SQLite
@@ -70,6 +71,7 @@ public class Main extends JavaPlugin {
                             "&9&oSettings.yml&7-Datei aktivieren."));
                     Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Trage die Anmeldedaten in die &9&oMysql.yml&7-Datei ein."));
                     setCurrentStorage("SQLite");
+                    Database.setup();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -132,6 +134,13 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
         BlackListManager.storeBlacklist();
+        try {
+            if(FileManager.getConfig("settings.yml").getBoolean("LogChatAfterShutdown")) FileManager.createChatLogFile();
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&cPlugin stopped!"));
 
     }
 
@@ -191,5 +200,9 @@ public class Main extends JavaPlugin {
 
     public RegionManager getRegionManager() {
         return regionManager;
+    }
+
+    public ArrayList<String> getChat() {
+        return chat;
     }
 }
