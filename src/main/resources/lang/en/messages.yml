@@ -1,4 +1,7 @@
-#
+# In order to customize this plugin to your liking change these values as much as you like.
+# If you want to color a message, use '&' instead of '§' as your color character.
+# If a message doesn't start with a color prefix, it's either gray or red, depending on the context of the message,
+# ergo the prefix coming before
 
 # Prefixes for plugin-messages.
 MainPrefix: '&b&lServerManager &8| &7'

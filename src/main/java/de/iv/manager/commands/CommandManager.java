@@ -63,7 +63,7 @@ public class CommandManager implements CommandExecutor {
                                 Main.loggablePlayers.forEach(a -> {
                                         String replace = PlaceholderAPI.setPlaceholders(p, "%player_name%");
                                         a.sendMessage(Vars.color(Vars.SERVER_LOG + Objects.requireNonNull(cfg.getString("Commands.ManagerCommandLogAlert"))
-                                                .replace("%%cmd", ChatColor.BLUE + command.getName()).replace("%sender%", ChatColor.BLUE + sender.getName())));
+                                                .replace("%cmd%", ChatColor.BLUE + command.getName()).replace("%sender%", ChatColor.BLUE + sender.getName())));
                                 });
                             }
 

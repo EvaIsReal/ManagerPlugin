@@ -52,13 +52,16 @@ public class FileManager {
     public static void registerConfigs() {
         ConfigurationFile msgEn = new ConfigurationFile("lang/en/messages.yml", Main.getInstance().getDataFolder());
         configs.add(msgEn);
-
         ConfigurationFile msgDe = new ConfigurationFile("lang/de/messages.yml", Main.getInstance().getDataFolder());
         configs.add(msgDe);
 
         ConfigurationFile stt = new ConfigurationFile("settings.yml", Main.getInstance().getDataFolder());
         configs.add(stt);
 
+        ConfigurationFile guiEn = new ConfigurationFile("lang/en/gui.yml", Main.getInstance().getDataFolder());
+        configs.add(guiEn);
+        ConfigurationFile guiDe = new ConfigurationFile("lang/de/gui.yml", Main.getInstance().getDataFolder());
+        configs.add(guiDe);
 
     }
     //Not using it but too afraid to delete ,_,
@@ -91,6 +94,18 @@ public class FileManager {
                 return cfg;
             }
 
+        } else if(fileName.contains("gui.yml")) {
+            if(Main.getInstance().getLanguage().equals("en")) {
+                langFile = new File(Main.getInstance().getDataFolder() + "/lang/en", "gui.yml");
+                cfg = YamlConfiguration.loadConfiguration(langFile);
+                return cfg;
+
+            } else if(Main.getInstance().getLanguage().equals("de")) {
+                langFile = new File(Main.getInstance().getDataFolder() + "/lang/de", "gui.yml");
+                cfg = YamlConfiguration.loadConfiguration(langFile);
+                return cfg;
+            }
+
         }
 
         for(File file : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
@@ -103,16 +118,8 @@ public class FileManager {
     }
 
 
-    public static File getSource(String fileName) {
-        File file;
-        for(File n : Arrays.stream(Main.getInstance().getDataFolder().listFiles()).toList()) {
-            if(n.getName().equals(fileName)) {
-                file = n;
-                return file;
-            }
-        }
-
-        return null;
+    public static File getSource(String path, String fileName) {
+        return new File(path, fileName);
     }
 
 

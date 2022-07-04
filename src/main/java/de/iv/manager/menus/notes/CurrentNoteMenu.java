@@ -21,12 +21,15 @@ import de.iv.manager.utils.ItemBuilder;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CurrentNoteMenu extends Menu {
 
@@ -35,6 +38,9 @@ public class CurrentNoteMenu extends Menu {
     }
 
     PlayerMenuUtility pmu = (PlayerMenuUtility) playerMenuUtility;
+
+    private FileConfiguration gui = Main.getInstance().getGuiConfig();
+    private FileConfiguration msg = Main.getInstance().getMessageConfig();
 
     @Override
     public String getMenuName() {
@@ -82,10 +88,22 @@ public class CurrentNoteMenu extends Menu {
     @Override
     public void setMenuItems() {
         ItemStack edit, print, delete, back;
-        edit = new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aNote bearbeiten")).build();
-        print = new ItemBuilder(Material.PAPER).setName(Vars.color("&aInformationen anzeigen")).build();
-        delete = new ItemBuilder(Material.LAVA_BUCKET).setName(Vars.color("&cNote löschen")).build();
-        back = new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build();
+        String cfgPath = "GUI.Notes.";
+        edit = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "EditNote.type")))
+                .setName(Vars.color(gui.getString(cfgPath + "EditNote.name")))
+                .setLore((List<String>) gui.get(cfgPath + "EditNote.lore"))
+                .build();
+        print = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "ShowInformation.type")))
+                .setName(Vars.color(gui.getString(cfgPath + "ShowInformation.name")))
+                .setLore((List<String>) gui.get(cfgPath + "ShowInformation.lore"))
+                .build();
+        delete = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "DelNote.type")))
+                .setName(Vars.color(gui.getString(cfgPath + "DelNote.name")))
+                .setLore((List<String>) gui.get(cfgPath + "DelNote.lore"))
+                .build();
+        back = new ItemBuilder(Material.valueOf(gui.getString("GUI.CloseItem.type"))).setName(Vars.color(gui.getString("GUI.CloseItem.name")))
+                .setLore((List<String>) gui.get("GUI.CloseItem.lore"))
+                .build();
 
         inventory.setItem(11, edit);
         inventory.setItem(13, print);

@@ -17,6 +17,7 @@ import de.iv.manager.regions.RegionManager;
 import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -29,7 +30,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
@@ -43,6 +43,7 @@ public class Main extends JavaPlugin {
     public ArrayList<String> chat = new ArrayList<>();
     private String language;
     private FileConfiguration messages;
+    private FileConfiguration guiYml;
 
     Logger logger = this.getLogger();
 
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin {
 
         try {
             messages = FileManager.getConfig(getDataFolder() + "/lang/" + language + "/messages.yml");
+            guiYml = FileManager.getConfig(getDataFolder() + "/lang/" + language + "/gui.yml");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -77,6 +79,7 @@ public class Main extends JavaPlugin {
                 try {
                     SQLite.connect();
                     logInfo("NOT USING MYSQL, USING SQLITE INSTEAD");
+
                     Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Falls du eine Mysql-Datenbank benutzen willst, kannst du diese in der " +
                             "&9&oSettings.yml&7-Datei aktivieren."));
                     Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Trage die Anmeldedaten in die &9&oMysql.yml&7-Datei ein."));
@@ -88,6 +91,25 @@ public class Main extends JavaPlugin {
             } else {
                 //Connect Mysql
             }
+
+
+
+            sendColoredConsoleMessage("&8#=====[&b"+ getDescription().getName() +"&8]=====");
+            sendColoredConsoleMessage("&8#  &9Plugin Information");
+            sendColoredConsoleMessage("&8#      &9Name: &r" + getDescription().getName());
+            sendColoredConsoleMessage("&8#      &9Authors: &r" + getDescription().getAuthors());
+            sendColoredConsoleMessage("&8#      &9Api-Version: &r" + getServer().getBukkitVersion());
+            sendColoredConsoleMessage("&8#      &9Plugin-Version: &r" + getDescription().getVersion());
+            sendColoredConsoleMessage("&8#      &9Storage Type: &r" + currentStorage);
+            sendColoredConsoleMessage("&8#      &9Language: &r" + language);
+            sendColoredConsoleMessage("&8#  &9More information/Support");
+            sendColoredConsoleMessage("&8#      Github: &r" + getDescription().getWebsite());
+            sendColoredConsoleMessage("&8#  &9Twitter:");
+            sendColoredConsoleMessage("&8#  &9Discord: " + "&riv#3654");
+            sendColoredConsoleMessage("&8#========================");
+
+            sendColoredConsoleMessage("&6" + guiYml.getString("GUI.MainMenu.Notes.name"));
+
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -165,6 +187,7 @@ public class Main extends JavaPlugin {
     private void registerListeners() {
         PluginManager pm = Bukkit.getPluginManager();
 
+        pm.registerEvents(new CommandExecuteListener(), instance);
         pm.registerEvents(new MenuListener(), instance);
         pm.registerEvents(new ChatListener(), instance);
         //pm.registerEvents(new RegionListener(instance), instance);
@@ -200,6 +223,11 @@ public class Main extends JavaPlugin {
 
     }
 
+    private void sendColoredConsoleMessage(String msg) {
+        Bukkit.getConsoleSender().sendMessage(Vars.color(msg));
+    }
+
+
     public String getCurrentStorage() {
         return currentStorage;
     }
@@ -223,5 +251,9 @@ public class Main extends JavaPlugin {
 
     public String getLanguage() {
         return language;
+    }
+
+    public FileConfiguration getGuiConfig() {
+        return guiYml;
     }
 }

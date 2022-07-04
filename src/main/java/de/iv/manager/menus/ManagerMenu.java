@@ -9,6 +9,7 @@ this project without permission!
 
 package de.iv.manager.menus;
 
+import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.notes.NoteListMenu;
 import de.iv.manager.menus.notes.NotesMenu;
@@ -18,12 +19,18 @@ import de.iv.manager.menus.settings.ServerSettingsMenu;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ManagerMenu extends Menu{
+
+    private FileConfiguration cfg = Main.getInstance().getGuiConfig();
 
     public ManagerMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -57,14 +64,18 @@ public class ManagerMenu extends Menu{
 
     @Override
     public void setMenuItems() {
+        String cfgPath = "GUI.MainMenu.";
         ItemStack notes, players, settings, regions;
-        notes = new ItemBuilder(Material.PAPER).setName(ChatColor.GREEN + "Notes").setLore(Vars.color("&7Sieh dir Notizen an,"),
-                Vars.color("&7die von anderen Teamlern erstellt wurden")).build();
-        players = new ItemBuilder(Material.PLAYER_HEAD).setSkullOwner(playerMenuUtility.getOwner().getName()).setName(ChatColor.GREEN + "Spieler").
-                setLore(Vars.color("&7Eine Liste aller Spieler, \n die sich aktuell auf dem Server befinden")).build();
-        settings = new ItemBuilder(Material.COMMAND_BLOCK).setName(ChatColor.GREEN + "Server Settings").setLore(Vars.color("&7Manage Servereigenschaften und"),
-                Vars.color("&7verändere diese")).build();
-        //regions = new ItemBuilder(Material.SCAFFOLDING).setName(ChatColor.GREEN + "Regionen").setLore(Vars.color("&7Verwalte von dir erstellte Regionen")).build();
+
+        notes = new ItemBuilder(Material.valueOf(cfg.getString(cfgPath + "Notes.type"))).setName(Vars.color(cfg.getString(cfgPath + "Notes.name")))
+                .setLore((List<String>) cfg.get(cfgPath + "Notes.lore")).build();
+        players = new ItemBuilder(Material.valueOf(cfg.getString(cfgPath + "Player.type"))).setSkullOwner(playerMenuUtility.getOwner().getName())
+                .setName(Vars.color(cfg.getString(cfgPath + "Player.name")))
+                .setLore((List<String>) cfg.get("Player.lore")).build();
+        settings = new ItemBuilder(Material.valueOf(cfg.getString(cfgPath + "Settings.type")))
+                .setName(ChatColor.GREEN + "Server Settings")
+                .setLore((List<String>) cfg.get(cfgPath + "Settings.lore")).build();
+        regions = new ItemBuilder(Material.SCAFFOLDING).setName(ChatColor.GREEN + "Regionen").setLore(Vars.color("&7Verwalte von dir erstellte Regionen")).build();
 
 
         inventory.setItem(10, notes);

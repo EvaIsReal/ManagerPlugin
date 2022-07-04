@@ -21,7 +21,9 @@ public class Vars {
 
 
     public static String color(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+        if(s != null)
+            return ChatColor.translateAlternateColorCodes('&', s);
+        else return null;
     }
 
     private static FileConfiguration cfg = Main.getInstance().getMessageConfig();
@@ -37,6 +39,9 @@ public class Vars {
                 .map(File::getName)
                 .collect(Collectors.toSet());
     }
+
+
+
 
 
 

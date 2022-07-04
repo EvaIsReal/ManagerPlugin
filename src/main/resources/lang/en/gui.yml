@@ -1,0 +1,62 @@
+
+# configure names, item-types and lore for every item in a menu
+# make sure to always use '&' instead of '§' EXCEPT for strings in the 'lore' tag!
+GUI:
+  FillerItemType: GRAY_STAINED_GLASS_PANE
+
+  CloseItem:
+    name: "&4close"
+    lore: []
+    type: BARRIER
+
+  MainMenu:
+    Notes:
+      name: "&aNotes"
+      lore: ["§7Look at notes", "§7created by other staff members"]
+      type: PAPER
+    Player:
+      name: "&aPlayer"
+      lore: ["§7A list of all players"]
+      type: PLAYER_HEAD
+    Settings:
+      name: "&aServer Settings"
+      lore: ["§7Manage server properties"]
+      type: COMMAND_BLOCK
+  Notes:
+    CreateNote:
+      name: "&aCreate Note"
+      lore: ["§7create a note"]
+      type: WRITABLE_BOOK
+    ShowNotes:
+      name: "&aShow Notes"
+      lore: ["§7Show every note"]
+      type: PAPER
+    EditNote:
+      name: "&aEdit Note"
+      lore: ["§7Edit an existing Note"]
+      type: WRITABLE_BOOK
+    ShowInformation:
+      name: "&aShow Note Information"
+      lore: ["§7Print the notes information in chat"]
+      type: PAPER
+    DelNote:
+      name: "&aDelete Note"
+      lore: ["§7Delete an existing Note"]
+      type: LAVA_BUCKET
+  NoteList:
+    CurrentNote:
+      lore: ["§7Created by &a%creator%", "&7Creation-date: &a%<date>"] # <date> is not changeable. You can only change the color prefix before
+      type: PAPER
+      pattern: "dd.MM.yyyy ss:mm:HH"
+  CurrentPlayerMenu:
+    TpToPlayer:
+      name: "&aTeleport to player"
+      lore: []
+      type: ENDER_PEARL
+    TpToYou:
+      name: "&aTeleport to you"
+      lore: []
+      type: ENDER_EYE
+
+
+

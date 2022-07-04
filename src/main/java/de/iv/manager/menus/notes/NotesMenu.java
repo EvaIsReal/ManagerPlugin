@@ -21,6 +21,7 @@ import de.iv.manager.utils.ItemBuilder;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,11 +30,16 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class NotesMenu extends Menu {
 
     public NotesMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
     }
+
+    private FileConfiguration gui = Main.getInstance().getGuiConfig();
+    private FileConfiguration msg = Main.getInstance().getMessageConfig();
 
     @Override
     public String getMenuName() {
@@ -72,10 +78,19 @@ public class NotesMenu extends Menu {
     @Override
     public void setMenuItems() {
         ItemStack create, list, delete, close;
-        create = new ItemBuilder(Material.WRITABLE_BOOK).setName(Vars.color("&aNote erstellen")).build();
-        list = new ItemBuilder(Material.PAPER).setName(Vars.color("&aNotes anzeigen")).build();
-        delete = new ItemBuilder(Material.LAVA_BUCKET).setName(Vars.color("&cNote löschen")).build();
-        close = new ItemBuilder(Material.BARRIER).setName(Vars.color("&4schließen")).build();
+        String cfgPath = "GUI.Notes.";
+        create = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "CreateNote.type"))).setName(Vars.color(gui.getString(cfgPath + "CreateNote.name")))
+                .setLore((List<String>) gui.get(cfgPath + "CreateNote.lore"))
+                .build();
+        list = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "ShowNotes.type"))).setName(Vars.color(gui.getString(cfgPath + "ShowNotes.name")))
+                .setLore((List<String>) gui.get(cfgPath + "ShowNotes.lore"))
+                .build();
+        delete = new ItemBuilder(Material.valueOf(gui.getString(cfgPath + "DelNote.type"))).setName(Vars.color(gui.getString(cfgPath + "DelNote.name")))
+                .setLore((List<String>) gui.get(cfgPath + "DelNote.lore"))
+                .build();
+        close = new ItemBuilder(Material.valueOf(gui.getString("GUI.CloseItem.type"))).setName(Vars.color(gui.getString("GUI.CloseItem.name")))
+                .setLore((List<String>) gui.get("GUI.CloseItem.lore"))
+                .build();
 
         inventory.setItem(11, create);
         inventory.setItem(15, list);

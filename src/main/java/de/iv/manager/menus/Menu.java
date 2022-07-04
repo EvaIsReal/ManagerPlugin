@@ -9,6 +9,7 @@ this project without permission!
 
 package de.iv.manager.menus;
 
+import de.iv.manager.core.Main;
 import de.iv.manager.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,8 +25,8 @@ public abstract class Menu implements InventoryHolder {
     protected PlayerMenuUtility playerMenuUtility;
     protected Player p;
     protected Inventory inventory;
-    protected ItemStack FILLER_GLASS = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
-
+    protected ItemStack FILLER_GLASS = new ItemBuilder(Material.valueOf(Main.getInstance().getGuiConfig().getString("GUI.FillerItemType"))).setName(" ").build();
+    //protected ItemStack FILLER_GLASS = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
 
     public Menu(PlayerMenuUtility playerMenuUtility) {
         this.playerMenuUtility = playerMenuUtility;
