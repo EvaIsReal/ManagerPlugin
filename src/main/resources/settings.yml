@@ -12,6 +12,8 @@ LogChatAfterShutdown: false
 # German:  de
 Language: "en"
 
+DebugMode: false
+
 # Mysql settings
 # Paste in your login information to connect your Mysql-DB. This only works if 'UseMysql' is set to true
 MySQL:

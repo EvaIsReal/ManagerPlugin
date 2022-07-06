@@ -5,14 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class AdminSettings {
-
-
-
-    //CRUD - ChatHistory
-
     private static HashMap<Player, ArrayList<String>> chatHistory = new HashMap<>();
 
     public static void handleHistory(AsyncPlayerChatEvent e) {

@@ -13,6 +13,9 @@ commands:
   chathistory:
     aliases: ch
     description: Erfasse die zuletzt geschriebenen Nachrichten eines Spielers
+  textchannel:
+    aliases: tc
+    description: Change the text channel you are chatting
 permissions:
   manager:
     showNoteMenu:
@@ -20,6 +23,10 @@ permissions:
     seeNoteCreationLog:
     seeCommandLog:
     seeChatHistory:
+    switchTextChannel:
+    teamMember:
+
+
 
     player:
       chat_format

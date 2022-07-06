@@ -7,6 +7,8 @@
 MainPrefix: '&b&lServerManager &8| &7'
 ErrorPrefix: '&4&lERROR &8| &c'
 LogPrefix: '&9&lServerLog &8| &7'
+TeamPrefix: "&8[&2&lTeamChat&8] %player% &8| &7"
+TicketPrefix: "&6&l%ticket_id% &8| &7"
 
 # Messages displayed when an exception occurs
 ExceptionMessages:

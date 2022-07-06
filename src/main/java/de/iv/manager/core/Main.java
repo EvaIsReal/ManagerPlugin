@@ -9,6 +9,7 @@ import de.iv.manager.SQL.Database;
 import de.iv.manager.SQL.SQLite;
 import de.iv.manager.commands.ChatHistoryCommand;
 import de.iv.manager.commands.CommandManager;
+import de.iv.manager.commands.TextChannelManageCommand;
 import de.iv.manager.events.*;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.cc.BlackListManager;
@@ -17,7 +18,6 @@ import de.iv.manager.regions.RegionManager;
 import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -39,11 +39,17 @@ public class Main extends JavaPlugin {
     private static Main instance;
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static final ArrayList<Player> loggablePlayers = new ArrayList<>();
+    public static HashMap<Player, TextChannel> textChannelMap = new HashMap<>();
+    public static final ArrayList<Player> teamPlayers = new ArrayList<>();
+    private HashMap<String, Object> dataContainer = new HashMap<>();
+    //public static final ArrayList<Player> ticketPlayers = new ArrayList<>();
+
     private RegionManager regionManager = new RegionManager();
     public ArrayList<String> chat = new ArrayList<>();
     private String language;
     private FileConfiguration messages;
     private FileConfiguration guiYml;
+    private FileConfiguration settings;
 
     Logger logger = this.getLogger();
 
@@ -66,11 +72,13 @@ public class Main extends JavaPlugin {
         }
 
         try {
+            settings = FileManager.getConfig("settings.yml");
             messages = FileManager.getConfig(getDataFolder() + "/lang/" + language + "/messages.yml");
             guiYml = FileManager.getConfig(getDataFolder() + "/lang/" + language + "/gui.yml");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+
 
 
         //Connect SQLite
@@ -181,7 +189,7 @@ public class Main extends JavaPlugin {
         getCommand("manager").setExecutor(new CommandManager());
 
         getCommand("chathistory").setExecutor(new ChatHistoryCommand());
-        getCommand("chathistory").setTabCompleter(new ChatHistoryCommand());
+        getCommand("textchannel").setExecutor(new TextChannelManageCommand());
     }
 
     private void registerListeners() {
@@ -193,7 +201,6 @@ public class Main extends JavaPlugin {
         //pm.registerEvents(new RegionListener(instance), instance);
         pm.registerEvents(new ServerPingListener(), instance);
         pm.registerEvents(new LoginListener(), instance);
-
     }
 
     //Utility methods
@@ -255,5 +262,13 @@ public class Main extends JavaPlugin {
 
     public FileConfiguration getGuiConfig() {
         return guiYml;
+    }
+
+    public FileConfiguration getSettingsConfig() {
+        return settings;
+    }
+
+    public HashMap<String, Object> getDataContainer() {
+        return dataContainer;
     }
 }
