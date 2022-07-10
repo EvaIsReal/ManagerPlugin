@@ -1,7 +1,9 @@
 package de.iv.manager.events;
 
 import de.iv.manager.core.FileManager;
+import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +22,9 @@ public class ServerPingListener implements Listener {
             throw new RuntimeException(ex);
         }
         if(motd != null) e.setMotd(Vars.color(motd));
+
+
+
     }
 
 }

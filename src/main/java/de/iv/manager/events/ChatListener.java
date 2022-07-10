@@ -12,7 +12,9 @@ package de.iv.manager.events;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.cc.BlackListManager;
+import de.iv.manager.models.Ticket;
 import de.iv.manager.security.AdminSettings;
+import de.iv.manager.text.TextChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,18 +24,22 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChatListener implements Listener {
+
+    public static HashMap<Player, TextChannel> tcMap = new HashMap<>();
+    public static HashMap<Player, Ticket> ticketMap = new HashMap<>();
 
 
     @EventHandler
     public void onMessageSent(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         e.setCancelled(true);
-        HashMap<Player, TextChannel> tcMap = Main.textChannelMap;
+        if(tcMap.containsKey(p) && !ticketMap.containsKey(p)) handleChat(e, tcMap.get(p));
+        if(ticketMap.containsKey(p)) handleChat(e, ticketMap.get(p));
 
-        handleChat(e, tcMap.get(p));
         /*
             // Team tc
             if(e.getMessage().startsWith(".") && Main.teamPlayers.contains(p)) {
@@ -61,15 +67,25 @@ public class ChatListener implements Listener {
 
     }
 
+
+
     public static void handleChat(AsyncPlayerChatEvent e, TextChannel channel) {
         e.setCancelled(true);
         Player p = e.getPlayer();
-        channel.getRecipients().forEach(n -> {
-            n.sendMessage(Vars.color(channel.getPrefix().replace("%player%", p.getName()) + e.getMessage()));
+        channel.messgageReceivers().forEach(n -> {
+            n.sendMessage(Vars.color(channel.prefix().replace("%player%", p.getName()) + e.getMessage()));
         });
-
-
     }
+    public static void handleChat(AsyncPlayerChatEvent e, Ticket ticket) {
+        e.setCancelled(true);
+        Player p = e.getPlayer();
+        ticket.getReceivers().forEach(n -> {
+            n.sendMessage(Vars.color("&8[&4&l"+ ticket.getTicketId() +"&8] &7"+ e.getPlayer().getName() +"&8 | &7" + e.getMessage()));
+        });
+    }
+
+
+
 
 
 }

@@ -4,6 +4,7 @@ import de.iv.manager.commands.subcommands.NoteCommand;
 import de.iv.manager.commands.subcommands.NoteMenuCommand;
 import de.iv.manager.commands.subcommands.Test;
 import de.iv.manager.commands.subcommands.ToggleCommandLogging;
+import de.iv.manager.commands.ticket.*;
 import de.iv.manager.core.Main;
 import de.iv.manager.core.Vars;
 import de.iv.manager.menus.ManagerMenu;
@@ -12,6 +13,7 @@ import de.iv.manager.utils.LoggableCommand;
 import de.iv.manager.utils.Subcommand;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +29,12 @@ public class CommandManagerTicket implements CommandExecutor {
     private List<Subcommand> subcommands = new ArrayList<>();
 
     public CommandManagerTicket() {
-
+        subcommands.add(new CreateTicketCommand());
+        subcommands.add(new TicketListCommand());
+        subcommands.add(new TicketAcceptCommand());
+        subcommands.add(new TicketCloseCommand());
+        subcommands.add(new TicketJoinCommand());
+        subcommands.add(new TicketLeaveCommand());
     }
 
     FileConfiguration cfg = Main.getInstance().getMessageConfig();
@@ -53,9 +60,9 @@ public class CommandManagerTicket implements CommandExecutor {
                                             .replace("%cmd%", ChatColor.BLUE + command.getName()).replace("%sender%", ChatColor.BLUE + sender.getName())));
                                 });
                             }
-                        } else p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNullpointerException"))));
+                        } //else p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNullpointerException"))));
                     } else {
-                        p.sendMessage(Vars.color(Objects.requireNonNull(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNoPermissionException"))));
+                        p.sendMessage(Vars.color(cfg.getString(Vars.ERROR + "ExceptionMessages.CommandNoPermissionException")));
                         break;
                     }
                 }
@@ -72,13 +79,8 @@ public class CommandManagerTicket implements CommandExecutor {
 
                  p.sendMessage("");
                  p.sendMessage("§8§m------------------------------------");
-
             }
-
-
         }
-
-
         return true;
     }
 

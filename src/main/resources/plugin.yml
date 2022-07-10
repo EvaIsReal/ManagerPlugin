@@ -10,6 +10,8 @@ commands:
   manager:
     aliases: m
     description: Zeigt alle Commands des Manager-Plugins
+  tickets:
+    description: ticket related commands
   chathistory:
     aliases: ch
     description: Erfasse die zuletzt geschriebenen Nachrichten eines Spielers

@@ -9,12 +9,14 @@ import de.iv.manager.SQL.Database;
 import de.iv.manager.SQL.SQLite;
 import de.iv.manager.commands.ChatHistoryCommand;
 import de.iv.manager.commands.CommandManager;
+import de.iv.manager.commands.CommandManagerTicket;
 import de.iv.manager.commands.TextChannelManageCommand;
 import de.iv.manager.events.*;
 import de.iv.manager.menus.PlayerMenuUtility;
 import de.iv.manager.menus.cc.BlackListManager;
 import de.iv.manager.menus.plugins.CurrentPluginMenu;
 import de.iv.manager.regions.RegionManager;
+import de.iv.manager.text.TextChannelManager;
 import de.iv.manager.utils.DataManager;
 import de.iv.manager.utils.NoteStorageUtil;
 import org.bukkit.Bukkit;
@@ -39,7 +41,6 @@ public class Main extends JavaPlugin {
     private static Main instance;
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static final ArrayList<Player> loggablePlayers = new ArrayList<>();
-    public static HashMap<Player, TextChannel> textChannelMap = new HashMap<>();
     public static final ArrayList<Player> teamPlayers = new ArrayList<>();
     private HashMap<String, Object> dataContainer = new HashMap<>();
     //public static final ArrayList<Player> ticketPlayers = new ArrayList<>();
@@ -64,6 +65,7 @@ public class Main extends JavaPlugin {
         //ConfigManager configManager = new ConfigManager();
         FileManager.setup();
         DataManager dataManager = new DataManager();
+        TextChannelManager textChannelManager = new TextChannelManager();
 
         try {
             language = FileManager.getConfig("settings.yml").getString("Language");
@@ -88,9 +90,7 @@ public class Main extends JavaPlugin {
                     SQLite.connect();
                     logInfo("NOT USING MYSQL, USING SQLITE INSTEAD");
 
-                    Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Falls du eine Mysql-Datenbank benutzen willst, kannst du diese in der " +
-                            "&9&oSettings.yml&7-Datei aktivieren."));
-                    Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + "&7Trage die Anmeldedaten in die &9&oMysql.yml&7-Datei ein."));
+                    Bukkit.getConsoleSender().sendMessage(Vars.color(Vars.PREFIX + getMessageConfig().getString("Console.MysqlHint")));
                     setCurrentStorage("SQLite");
                     Database.setup();
                 } catch (SQLException e) {
@@ -114,7 +114,7 @@ public class Main extends JavaPlugin {
             sendColoredConsoleMessage("&8#      Github: &r" + getDescription().getWebsite());
             sendColoredConsoleMessage("&8#  &9Twitter:");
             sendColoredConsoleMessage("&8#  &9Discord: " + "&riv#3654");
-            sendColoredConsoleMessage("&8#========================");
+            sendColoredConsoleMessage("&8#=========================");
 
             sendColoredConsoleMessage("&6" + guiYml.getString("GUI.MainMenu.Notes.name"));
 
@@ -185,11 +185,15 @@ public class Main extends JavaPlugin {
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     private void registerCommands() {
         getCommand("manager").setExecutor(new CommandManager());
 
         getCommand("chathistory").setExecutor(new ChatHistoryCommand());
+
         getCommand("textchannel").setExecutor(new TextChannelManageCommand());
+
+        getCommand("tickets").setExecutor(new CommandManagerTicket());
     }
 
     private void registerListeners() {

@@ -7,16 +7,12 @@ package de.iv.manager.core;
 
 
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -43,6 +39,7 @@ public class Vars {
     private static FileConfiguration cfg = Main.getInstance().getMessageConfig();
 
     public static String PREFIX = cfg.getString("MainPrefix");
+    public static String TICKET_PREFIX = cfg.getString("TicketPrefix");
     public static String ERROR = cfg.getString("ErrorPrefix");
     public static String GENERIC_ERROR = cfg.getString("ExceptionMessages.GenericError");
     public static String SERVER_LOG = cfg.getString("LogPrefix");
